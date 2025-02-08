@@ -18,7 +18,7 @@ const PaperItem = ({ paper }: { paper: Paper }) => {
 				<p class="text-sm text-primary-content">
 					<span>{paper.timestamp.toDateString()}</span>
 					<span class="ml-10">
-						Author: {" "}
+						Author:{" "}
 						<span class="font-bold text-orange-200">
 							{paper.author.substring(0, 10)}...
 						</span>

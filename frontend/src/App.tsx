@@ -78,8 +78,13 @@ const Layout: ParentComponent = (props) => {
 								Error: {address.error}
 							</Match>
 							<Match when={address()}>
-								<span class="mr-5 p-3 bg-primary rounded-xl">
-									<A class="hover:underline" href={`/profile/${address()}`}>{address()!.substring(0, 10)!}...</A>
+								<span class="mr-5 p-3 bg-indigo-600 hover:bg-indigo-700 transition-colors rounded-xl">
+									<A
+										class="hover:underline"
+										href={`/profile/${address()}`}
+									>
+										{address()!.substring(0, 10)!}...
+									</A>
 									<i
 										class="bi bi-clipboard ml-4 inline-block transition hover:-translate-y-0.5 cursor-pointer"
 										onClick={copyAddress}

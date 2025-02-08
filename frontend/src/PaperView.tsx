@@ -18,31 +18,56 @@ const PostView: Component = () => {
 					By{" "}
 					<A
 						href={`/profile/${paper()!.author}`}
-						class="font-mono font-bold text-orange-200"
+						class="font-mono font-bold text-orange-200 hover:underline"
 					>
 						{paper()!.author}
 					</A>{" "}
 					on {paper()!.timestamp.toDateString()}
 				</p>
+			</div>
+			<div class="max-w-200 px-5 flex flex-row">
+				<div>
+					<iframe
+						title="pdf"
+						src={EXAMPLE_PDF}
+						height="500"
+						width="100%"
+						class="mt-10"
+					></iframe>
+				</div>
+				<div>
+					<div class="mt-10 flex flex-row justify-items-around">
+						<button
+							type="button"
+							class="btn bg-orange-600 hover:bg-orange-700 w-12 h-12 rounded-full"
+						>
+							+1
+						</button>
+						<div class="w-10" />
+						<button
+							type="button"
+							class="btn bg-gray-600 hover:bg-gray-700 w-12 h-12 rounded-full"
+						>
+							-1
+						</button>
+					</div>
 
-				<iframe
-					title="pdf"
-					src={EXAMPLE_PDF}
-					height="500"
-					width="100%"
-					class="mt-10"
-				></iframe>
-
-				<div class="reviews">
-					<h2 class="font-bold text-3xl my-5">Comments</h2>
-					<Show when={!paper()!.reviews || paper()!.reviews.length === 0}>
-						<p>No reviews yet. Be the first to review!</p>
-					</Show>
-					<ul>
-						<For each={paper()!.reviews}>
-							{() => (<p>TODO: Review</p>)}
-						</For>
-					</ul>
+					<div class="reviews">
+						<h2 class="font-bold text-3xl my-5">Comments</h2>
+						<Show
+							when={
+								!paper()!.reviews ||
+								paper()!.reviews.length === 0
+							}
+						>
+							<p>No reviews yet. Be the first to review!</p>
+						</Show>
+						<ul>
+							<For each={paper()!.reviews}>
+								{() => <p>TODO: Review</p>}
+							</For>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</Show>
