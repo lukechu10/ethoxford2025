@@ -36,7 +36,9 @@ const PostList: Component = () => {
 						<li class="list-row">
 							<div>
 								<i class="bi bi-arrow-up"></i>
-								{post.votes}
+								<p>
+									{post.votes}
+								</p>
 							</div>
 							<div>
 								<p class="text-lg font-bold">{post.title}</p>
