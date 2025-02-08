@@ -1,34 +1,34 @@
-// uploadToGreenfield.ts
-
 import { client } from './greenfieldClient';
-import * as dotenv from 'dotenv';
 
-dotenv.config();
-
-// Retrieve the account's private key from environment variables.
-const ACCOUNT_PRIVATEKEY = process.env.ACCOUNT_PRIVATEKEY as string;
+// ⚠️ SECURITY WARNING:
+// Do not expose your private key in client-side code in production!
+// Instead, move this logic to a secure backend service.
+// For demonstration, we use an environment variable via Vite.
+const ACCOUNT_PRIVATEKEY = import.meta.env.VITE_ACCOUNT_PRIVATEKEY;
+if (!ACCOUNT_PRIVATEKEY) {
+  throw new Error("ACCOUNT_PRIVATEKEY is not defined in the environment variables.");
+}
 
 /**
- * Uploads a File (from a file input) to a specified bucket in Greenfield storage.
+ * Uploads a file to a specified bucket in Greenfield storage.
  *
- * @param file - The File object selected from an input element.
+ * @param file - The File object to be uploaded.
+ * @param description - Optional description or metadata for the file.
  * @returns The public URL for the uploaded file.
  */
-export async function uploadToGreenfield(file: File): Promise<string> {
-  // Define your bucket name and derive the object name from the file.
+export async function uploadToGreenfield(file: File, description?: string): Promise<string> {
   const bucketName = "research-papers";
   const objectName = file.name;
-
-  // Optionally, you can include a transaction hash if needed; otherwise, use an empty string.
-  const txnHash = "";
+  const txnHash = ""; // Include a transaction hash if required by the API
 
   try {
-    // Upload the file using the client's upload method.
+    // If you need to include the description as metadata, check if the SDK supports it.
+    // For now, we only upload the file.
     const uploadRes = await client.object.uploadObject(
       {
         bucketName,
         objectName,
-        body: file, // In the browser, the File object is already a Blob.
+        body: file, // File is already a Blob in the browser.
         txnHash,
       },
       {
@@ -37,11 +37,9 @@ export async function uploadToGreenfield(file: File): Promise<string> {
       }
     );
 
-    // Log the full response to help debug the returned data structure.
     console.log('Upload Response:', uploadRes);
 
-    // Since the SDK does not return a "success" property,
-    // we assume that if no error is thrown, the upload succeeded.
+    // Construct the URL from which the file can be accessed.
     const fileURL = `https://${bucketName}.gnfd.storage/${objectName}`;
     return fileURL;
   } catch (error) {

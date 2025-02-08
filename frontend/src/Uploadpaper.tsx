@@ -17,10 +17,12 @@ const UploadPaper = () => {
     try {
       if (!paperFile()) throw new Error("No file selected.");
       setMessage("Uploading to Greenfield...");
-      const fileURL = await uploadToGreenfield(paperFile()!); // Pass all required arguments
+      // Pass the description as well if needed
+      const fileURL = await uploadToGreenfield(paperFile()!, description());
       setMessage(`File uploaded successfully! URL: ${fileURL}`);
-    } catch (error) {
-    //   setMessage(`Error: ${error.message}`);
+    } catch (error: any) {
+      console.error("Upload error:", error);
+      setMessage(`Error: ${error.message || "Upload failed."}`);
     }
   };
 
