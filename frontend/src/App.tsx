@@ -56,14 +56,20 @@ const App: Component = () => {
 
 const Layout: ParentComponent = (props) => {
 	const wallet = useContext(SignerContext)!;
-	const [address, { mutate, refetch }] = createResource(() =>
+	const [address, {}] = createResource(() =>
 		wallet.getAddress(),
 	);
 
+	const copyAddress = () => {
+		navigator.clipboard.writeText(address()!);
+	}
+
 	return (
 		<>
-			<div class="navbar bg-base-100 shadow-sm">
-				<div class="flex-none">ChainReview</div>
+			<div class="navbar bg-base-300 shadow-sm font-mono">
+				<div class="pl-5 flex-none">
+					<p class="text-xl font-bold font-mono">ChainReview</p>
+				</div>
 				<div class="flex-1"></div>
 				<div class="flex-none">
 					<Suspense fallback={<div>Loading...</div>}>
@@ -72,7 +78,10 @@ const Layout: ParentComponent = (props) => {
 								Error: {address.error}
 							</Match>
 							<Match when={address()}>
-								Address: {address()!}
+								<span class="mr-5 p-3 bg-primary rounded-xl">
+									{address()!.substring(0, 8)!}...
+									<i class="bi bi-clipboard ml-4 inline-block transition hover:-translate-y-0.5 cursor-pointer" onClick={copyAddress}></i>
+								</span>
 							</Match>
 						</Switch>
 					</Suspense>

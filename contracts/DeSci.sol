@@ -17,6 +17,9 @@ contract DeSci {
 		address author;
 		string title;
 		uint256 timestamp;
+		// Location of the paper. HTTP URL for now.
+		string pdfUrl;
+
 		// Defaults to 0.
 		int64 votes;
 		// Review (ids) for the paper.
