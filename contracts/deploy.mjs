@@ -1,5 +1,5 @@
 import { Contract, ContractFactory, ethers } from 'ethers';
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import solc from "solc";
 
 const source = readFileSync("./Test.sol").toString();
@@ -36,4 +36,10 @@ const signer = new ethers.Wallet(key, provider);
 
 const factory = new ContractFactory(ABI, bytecode, signer);
 const contract = await factory.deploy();
-console.log(contract);
+
+writeFileSync("./abi.json", JSON.stringify(ABI));
+
+const address = await contract.getAddress();
+console.log("Contract successfully deployed. Address: " + address)
+
+writeFileSync("./address.json", JSON.stringify({ address }));
