@@ -5,16 +5,19 @@ import {
 	Suspense,
 	Switch,
 	useContext,
+	lazy,
 	type Component,
+    ParentComponent,
 } from "solid-js";
 import { JsonRpcSigner } from "ethers";
-import PostList from "./PostList";
-import PostView from "./PostView";
-import UploadPaper from "./Uploadpaper";
 
 import * as provider from "./provider";
 import { SignerContext } from "./provider";
 import { Route, Router } from "@solidjs/router";
+
+const PostList = lazy(() => import("./PostList"));
+const PostView = lazy(() => import("./PostView"));
+const UploadPaper = lazy(() => import("./Uploadpaper"));
 
 declare global {
 	interface Window {
@@ -50,16 +53,14 @@ const App: Component = () => {
 	);
 };
 
-const MainView: Component = () => {
+const Layout: ParentComponent = (props) => {
 	const wallet = useContext(SignerContext)!;
 	const [address, { mutate, refetch }] = createResource(() =>
 		wallet.getAddress()
 	);
 
-	console.log(provider);
-
 	return (
-		<Router>
+		<>
 			<div class="navbar bg-base-100 shadow-sm">
 				<div class="flex-none">DeSci</div>
 				<div class="flex-1"></div>
@@ -76,7 +77,14 @@ const MainView: Component = () => {
 					</Suspense>
 				</div>
 			</div>
+			{props.children}
+		</>
+	)
+}
 
+const MainView: Component = () => {
+	return (
+		<Router root={Layout}>
 			<Route path="/" component={PostList} />
 			<Route path="/paper/:id" component={PostView} />
 			<Route path="/upload" component={UploadPaper} />
