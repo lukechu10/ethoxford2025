@@ -1,7 +1,7 @@
 import { A } from "@solidjs/router";
 import type { Paper } from "../provider";
 
-const PaperItem = (paper: Paper) => {
+const PaperItem = ({ paper }: { paper: Paper }) => {
 	return (
 		<A
 			href={`/paper/${paper.id}`}

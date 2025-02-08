@@ -15,7 +15,7 @@ const PostList: Component = () => {
 			<ul>
 				<Show when={papers()}>
 					<For each={papers()}>
-						{(paper) => PaperItem(paper)}
+						{(paper) => (<PaperItem paper={paper} />)}
 					</For>
 				</Show>
 			</ul>

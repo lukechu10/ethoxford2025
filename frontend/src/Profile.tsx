@@ -1,6 +1,7 @@
 import { useParams } from "@solidjs/router";
 import * as provider from "./provider";
 import { Component, Show, createResource, For } from "solid-js";
+import PaperItem from "./components/PaperItem";
 
 const ProfilePage = () => {
     const params = useParams();
@@ -16,9 +17,7 @@ const ProfilePage = () => {
           <For each={papers()}>
             {(paper) => (
               <Show when={paper.author == params.profileId}>
-                <div class="card bg-base-300 rounded-box grid h-20 place-items-center hover:bg-sky-700">
-                  {paper.title}
-                </div>
+                  <PaperItem paper={paper} />
               </Show>
             )}
           </For>
