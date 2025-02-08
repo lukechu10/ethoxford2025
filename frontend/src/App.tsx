@@ -1,8 +1,6 @@
-import { createContext, createResource, createSignal, Match, Suspense, Switch, useContext, type Component } from 'solid-js';
-import { ethers, JsonRpcSigner } from "ethers";
+import { createResource, createSignal, Match, Suspense, Switch, useContext, type Component } from 'solid-js';
+import { JsonRpcSigner } from "ethers";
 import PostList from './PostList';
-
-import ABI from "../../contracts/abi.json";
 
 import * as provider from "./provider";
 import { SignerContext } from './provider';

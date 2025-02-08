@@ -8,7 +8,7 @@ contract DeSci {
 		uint256 paperId;
 		address reviewer;
 		string comment;
-		int256 votes;
+		int64 votes;
 	}
 
 	struct Paper {
@@ -16,15 +16,16 @@ contract DeSci {
 		uint256 id;
 		address author;
 		string title;
+		uint256 timestamp;
 		// Defaults to 0.
-		int256 votes;
+		int64 votes;
 		// Review (ids) for the paper.
 		// Defaults to empty array.
 		uint256[] reviews;
 	}
 
 	// Store the reputation of each user on the platform.
-	mapping(address => int256) public reputation;
+	mapping(address => int64) public reputation;
 
 	// Store the papers submitted by id.
 	Paper[] public papers;
@@ -43,6 +44,7 @@ contract DeSci {
 		paper.id = id;
 		paper.author = msg.sender;
 		paper.title = _title;
+		paper.timestamp = block.timestamp;
 
 		// Store it in the map.
 		papers.push(paper);
@@ -93,5 +95,13 @@ contract DeSci {
 
 	function getAllPapers() external view returns (Paper[] memory) {
 		return papers;
+	}
+
+	function getPaperVotes(uint256 _paperId) external view returns (int64) {
+		return papers[_paperId].votes;
+	}
+
+	function getReviewVotes(uint256 _reviewId) external view returns (int64) {
+		return reviews[_reviewId].votes;
 	}
 }
