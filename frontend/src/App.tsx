@@ -1,6 +1,9 @@
 import { createContext, createResource, createSignal, Match, Show, Suspense, Switch, useContext, type Component } from 'solid-js';
 import { ethers, JsonRpcSigner } from "ethers";
 import PostList from './PostList';
+import PostView from './postview';
+import { Router, Route } from "@solidjs/router";
+
 
 declare global {
 	interface Window {
@@ -38,6 +41,7 @@ const App: Component = () => {
 				)}
 			</div>
 		</div>
+		
 	)
 }
 
@@ -70,3 +74,20 @@ const MainView: Component = () => {
 }
 
 export default App;
+// test for postview page
+// import { Router, Route } from "@solidjs/router";
+// import { Component } from "solid-js";
+// import PostList from "./PostList";
+// import PostView from "./postview";
+
+// const App: Component = () => {
+//   return (
+//     <Router>
+//         <Route path="/" component={PostList} />
+//         <Route path="/post/:id" component={PostView} />
+//     </Router>
+//   );
+// };
+
+// export default App;
+
