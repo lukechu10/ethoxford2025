@@ -66,7 +66,7 @@ const Layout: ParentComponent = (props) => {
 		<>
 			<div class="navbar bg-slate-800 border-b-2 border-b-slate-600 shadow-sm font-mono">
 				<div class="pl-5 flex-none">
-					<A href="/" class="text-xl font-bold font-mono">
+					<A href="/" class="text-xl font-bold font-mono inline-block px-3 py-1 hover:bg-slate-700 rounded-lg transition-colors">
 						ChainReview
 					</A>
 				</div>
@@ -78,7 +78,7 @@ const Layout: ParentComponent = (props) => {
 								Error: {address.error}
 							</Match>
 							<Match when={address()}>
-								<span class="mr-5 p-3 bg-indigo-600 hover:bg-indigo-700 transition-colors rounded-xl">
+								<span class="mr-5 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 transition-colors rounded-lg">
 									<A
 										class="hover:underline"
 										href={`/profile/${address()}`}

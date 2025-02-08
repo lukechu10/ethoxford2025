@@ -36,7 +36,8 @@ const PostView: Component = () => {
 					></iframe>
 				</div>
 				<div class="flex-grow mt-10">
-					<h2 class="font-bold text-3xl my-5">Kudos: {paper()!.votes}</h2>
+					<h2 class="font-bold text-3xl mt-5 mb-2">Kudos: {paper()!.votes}</h2>
+					<p class="text-gray-400">Show your support by sending kudos straight from your crypto wallet.</p>
 					<div class="mt-5 flex flex-row justify-items-around">
 						<button
 							type="button"
@@ -63,7 +64,7 @@ const PostView: Component = () => {
 								paper()!.reviews.length === 0
 							}
 						>
-							<p>No reviews yet. Be the first to review!</p>
+							<p class="text-gray-400">No reviews yet. Be the first to review!</p>
 						</Show>
 						<ul>
 							<For each={paper()!.reviews}>
