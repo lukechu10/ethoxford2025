@@ -1,8 +1,10 @@
-import { createContext, createResource, createSignal, Match, Show, Suspense, Switch, useContext, type Component } from 'solid-js';
+import { createContext, createResource, createSignal, Match, Suspense, Switch, useContext, type Component } from 'solid-js';
 import { ethers, JsonRpcSigner } from "ethers";
 import PostList from './PostList';
 
 import ABI from "../../contracts/abi.json";
+
+import { getSigner, SignerContext } from "./provider";
 
 declare global {
 	interface Window {
@@ -10,7 +12,6 @@ declare global {
 	}
 }
 
-const SignerContext = createContext<JsonRpcSigner>();
 const provider = new ethers.BrowserProvider(window.ethereum);
 
 const App: Component = () => {
@@ -21,9 +22,7 @@ const App: Component = () => {
 	const [signer, setSigner] = createSignal<JsonRpcSigner | null>(null);
 
 	const connectWallet = async () => {
-		await provider.send("eth_requestAccounts", []);
-		const signer = await provider.getSigner();
-		setSigner(signer);
+		setSigner(await getSigner());
 	}
 
 	return (
