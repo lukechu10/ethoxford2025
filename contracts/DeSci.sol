@@ -1,4 +1,4 @@
-//SDPX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract DeSciPlatform {
@@ -31,20 +31,20 @@ contract DeSciPlatform {
 
     event paperReviewed(uint256 paperId, address indexed reviewer);
     event paperSubmitted(uint256 paperId, address indexed author, string greenfieldURI);
-    event paperVoted(uint256 paperId, address voter, int256 vote);
+    event paperVoted(uint256 paperId, address voter, bool vote);
 
 
     function submitPaper(string memory _greenfieldURI) external {
         paperCount ++;
         papers[paperCount] = Paper(paperCount, msg.sender, _greenfieldURI, 0);
-        emit PaperSubmitted(paperCount, msg.sender, _greenfieldURI);
+        emit paperSubmitted(paperCount, msg.sender, _greenfieldURI);
     }
 
-    function reviewPaper(string memory _reviewGreenfieldURI) external {
+    function reviewPaper(uint256 _paperId, string memory _reviewGreenfieldURI) external {
         require(papers[_paperId].id != 0, "Paper does not exist");
         reviewCount ++;
-        reviews[reviewCount] = Review(_paperId, msg.sender, _greenfieldURI, 0);
-        emit PaperReviewed(_paperId, msg.sender);
+        reviews[reviewCount] = Review(_paperId, msg.sender, _reviewGreenfieldURI, 0);
+        emit paperReviewed(_paperId, msg.sender);
     }
 
     function makeVote(uint256 _paperId, bool _upvote ) external {
@@ -56,7 +56,7 @@ contract DeSciPlatform {
             papers[_paperId].votes -= 1;
             reputation[papers[_paperId].author] -= 1;
         }
-        emit PaperVoted(_paperId, msg.sender, _upvote);
+        emit paperVoted(_paperId, msg.sender, _upvote);
     }
 
 }
