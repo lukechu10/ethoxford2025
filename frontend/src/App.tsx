@@ -1,9 +1,8 @@
 import { createContext, createResource, createSignal, Match, Show, Suspense, Switch, useContext, type Component } from 'solid-js';
 import { ethers, JsonRpcSigner } from "ethers";
 import PostList from './PostList';
-import PostView from './postview';
-import { Router, Route } from "@solidjs/router";
 
+import ABI from "../../contracts/abi.json";
 
 declare global {
 	interface Window {
@@ -11,33 +10,31 @@ declare global {
 	}
 }
 
-const WalletContext = createContext<JsonRpcSigner>();
+const SignerContext = createContext<JsonRpcSigner>();
+const provider = new ethers.BrowserProvider(window.ethereum);
 
 const App: Component = () => {
 	if (!window.ethereum) {
 		return <div>Install the MetaMask browser extension.</div>
 	}
 
-	const provider = new ethers.BrowserProvider(window.ethereum);
-	console.log(provider);
-
-	const [wallet, setWallet] = createSignal<JsonRpcSigner | null>(null);
+	const [signer, setSigner] = createSignal<JsonRpcSigner | null>(null);
 
 	const connectWallet = async () => {
 		await provider.send("eth_requestAccounts", []);
 		const signer = await provider.getSigner();
-		setWallet(signer);
+		setSigner(signer);
 	}
 
 	return (
 		<div class="app">
 			<div>
-				{wallet() === null ? (
+				{signer() === null ? (
 					<button class="btn" onClick={connectWallet}>Connect Wallet</button>
 				) : (
-					<WalletContext.Provider value={wallet()!}>
+					<SignerContext.Provider value={signer()!}>
 						<MainView />
-					</WalletContext.Provider>
+					</SignerContext.Provider>
 				)}
 			</div>
 		</div>
@@ -46,7 +43,7 @@ const App: Component = () => {
 }
 
 const MainView: Component = () => {
-	const wallet = useContext(WalletContext)!;
+	const wallet = useContext(SignerContext)!;
 	const [address, { mutate, refetch }] = createResource(() => wallet.getAddress());
 
 	return (<>
@@ -69,8 +66,24 @@ const MainView: Component = () => {
 			</div>
 		</div>
 
+		<TestContract />
+
 		<PostList />
 	</>);
+}
+
+const CONTRACT_ADDRESS = "0xe6cEbb6bdDc02e86c741555b431f1316eE592C72";
+
+const TestContract: Component = () => {
+	const signer = useContext(SignerContext)!;
+	const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+	console.log(contract);
+	(async() => {
+		console.log(await contract.set(123));
+	})();
+	return (<>
+
+	</>)
 }
 
 export default App;
