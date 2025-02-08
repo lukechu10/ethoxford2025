@@ -1,4 +1,4 @@
-import { Component, For } from "solid-js"
+import { Component, For } from "solid-js";
 
 interface PostData {
 	title: string;
@@ -22,8 +22,8 @@ const mockData: PostData[] = [
 		author: "Bob",
 		date: new Date(1990, 1, 2),
 		votes: -30,
-	}
-]
+	},
+];
 
 const PostList: Component = () => {
 	return (
@@ -36,9 +36,7 @@ const PostList: Component = () => {
 						<li class="list-row">
 							<div>
 								<i class="bi bi-arrow-up"></i>
-								<p>
-									{post.votes}
-								</p>
+								<p>{post.votes}</p>
 							</div>
 							<div>
 								<p class="text-lg font-bold">{post.title}</p>
@@ -53,7 +51,7 @@ const PostList: Component = () => {
 				</For>
 			</ul>
 		</div>
-	)
-}
+	);
+};
 
 export default PostList;
