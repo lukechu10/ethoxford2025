@@ -12,7 +12,7 @@ const PostView: Component = () => {
 
 	const posts = [
 		{
-			id: 1,
+			id: 0,
 			title: "Hello, world!",
 			author: "Alice",
 			date: "2/1/1990",
@@ -20,7 +20,7 @@ const PostView: Component = () => {
 			pdf: "https://introcs.cs.princeton.edu/java/home/chapter1.pdf",
 		},
 		{
-			id: 2,
+			id: 1,
 			title: "Boop",
 			author: "Bob",
 			date: "2/2/1990",

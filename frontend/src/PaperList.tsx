@@ -6,7 +6,7 @@ const PostList: Component = () => {
 	const [papers, {}] = createResource(() => provider.getAllPapers());
 	createEffect(() => {
 		console.log(papers());
-	})
+	});
 
 	return (
 		<div class="max-w-prose mx-auto">
