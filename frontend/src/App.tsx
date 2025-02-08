@@ -10,6 +10,7 @@ import {
 import { JsonRpcSigner } from "ethers";
 import PostList from "./PostList";
 import PostView from "./PostView";
+import UploadPaper from "./Uploadpaper";
 
 import * as provider from "./provider";
 import { SignerContext } from "./provider";
@@ -78,36 +79,9 @@ const MainView: Component = () => {
 
 			<Route path="/" component={PostList} />
 			<Route path="/paper/:id" component={PostView} />
+			<Route path="/upload" component={UploadPaper} />
 		</Router>
 	);
 };
 
 export default App;
-
-// test for postview page
-//import { Router, Route } from "@solidjs/router";
-//import { Component } from "solid-js";
-//import PostList from "./PostList";
-//import PostView from "./PostView";
-//import UploadPaper from "./Uploadpaper";
-//
-//
-//const App: Component = () => {
-//  return (
-//    <Router>
-//        <h1 class="text-2xl font-bold text-center my-4">DeSci Platform</h1>
-//
-//        <nav class="flex justify-center space-x-4 mb-6">
-//          <a href="/" class="text-blue-500 hover:underline">Home</a>
-//          <a href="/upload" class="text-blue-500 hover:underline">Upload Paper</a>
-//        </nav>
-//
-//        <Route path="/" component={PostList} />
-//        <Route path="/post/:id" component={PostView} />
-//		<Route path="/upload" component={UploadPaper} /> {/* New Route */}
-//
-//    </Router>
-//  );
-//};
-//
-//export default App;
