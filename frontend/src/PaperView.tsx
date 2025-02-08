@@ -1,27 +1,7 @@
-import { Component, createResource, createSignal, Show } from "solid-js";
+import { Component, createResource, createSignal, For, Show } from "solid-js";
 import { A, useParams } from "@solidjs/router";
 import * as provider from "./provider";
-//import "./PostView.css";
-
-const EXAMPLE_PDF = "https://example.com/another-pdf.pdf";
-const posts = [
-	{
-		id: 0,
-		title: "Hello, world!",
-		author: "Alice",
-		date: "2/1/1990",
-		content: "This is a test post.",
-		pdf: "https://introcs.cs.princeton.edu/java/home/chapter1.pdf",
-	},
-	{
-		id: 1,
-		title: "Boop",
-		author: "Bob",
-		date: "2/2/1990",
-		content: "This is another test post.",
-		pdf: "https://example.com/another-pdf.pdf",
-	},
-];
+import EXAMPLE_PDF from "../assets/dummy.pdf";
 
 const PostView: Component = () => {
 	const params = useParams();
@@ -53,7 +33,17 @@ const PostView: Component = () => {
 					class="mt-10"
 				></iframe>
 
-				<div class="reviews"></div>
+				<div class="reviews">
+					<h2 class="font-bold text-3xl my-5">Comments</h2>
+					<Show when={!paper()!.reviews || paper()!.reviews.length === 0}>
+						<p>No reviews yet. Be the first to review!</p>
+					</Show>
+					<ul>
+						<For each={paper()!.reviews}>
+							{() => (<p>TODO: Review</p>)}
+						</For>
+					</ul>
+				</div>
 			</div>
 		</Show>
 	);
