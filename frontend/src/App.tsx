@@ -1,4 +1,4 @@
-import { createResource, createSignal, Match, Show, Suspense, Switch, type Component } from 'solid-js';
+import { createContext, createResource, createSignal, Match, Show, Suspense, Switch, useContext, type Component } from 'solid-js';
 import { ethers, JsonRpcSigner } from "ethers";
 
 declare global {
@@ -6,6 +6,8 @@ declare global {
 		ethereum: any;
 	}
 }
+
+const WalletContext = createContext<JsonRpcSigner>();
 
 const App: Component = () => {
 	const provider = new ethers.BrowserProvider(window.ethereum);
@@ -25,31 +27,36 @@ const App: Component = () => {
 				{wallet() === null ? (
 					<button class="btn" onClick={connectWallet}>Connect Wallet</button>
 				) : (
-					<MainView wallet={wallet()!} />
+					<WalletContext.Provider value={wallet()!}>
+						<MainView />
+					</WalletContext.Provider>
 				)}
 			</div>
 		</div>
 	)
 }
 
-const MainView: Component<{ wallet: JsonRpcSigner }> = (props) => {
-	const [address, { mutate, refetch }] = createResource(() => props.wallet.getAddress());
+const MainView: Component = () => {
+	const wallet = useContext(WalletContext)!;
+	const [address, { mutate, refetch }] = createResource(() => wallet.getAddress());
 
 	return (<>
-		<ul class="menu menu-horizontal bg-base-200 rounded-box">
+		<div class="navbar bg-base-100 shadow-sm">
+			
 			<li><a href="/">DeSci</a></li>
-		</ul>
 
-		<Suspense fallback={<div>Loading...</div>}>
-			<Switch>
-				<Match when={address.error}>
-					<div>Error: {address.error}</div>
-				</Match>
-				<Match when={address()}>
-					<div>Address: {address()!}</div>
-				</Match>
-			</Switch>
-		</Suspense>
+			<Suspense fallback={<div>Loading...</div>}>
+				<Switch>
+					<Match when={address.error}>
+						<div>Error: {address.error}</div>
+					</Match>
+					<Match when={address()}>
+						<div>Address: {address()!}</div>
+					</Match>
+				</Switch>
+			</Suspense>
+		</div>
+
 	</>);
 }
 
