@@ -51,9 +51,8 @@ if (deploy) {
 
 
 	const address = await contract.getAddress();
-	console.log("Contract successfully deployed. Address: " + address)
-
 	writeFileSync("./address.json", JSON.stringify({ address }));
+	console.log("Contract successfully deployed. Address: " + address)
 } else {
 	console.log("Contract was not deployed. Pass the --deploy flag to deploy the contract.");
 }

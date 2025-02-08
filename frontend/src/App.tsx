@@ -4,15 +4,14 @@ import PostList from './PostList';
 
 import ABI from "../../contracts/abi.json";
 
-import { getSigner, SignerContext } from "./provider";
+import * as provider from "./provider";
+import { SignerContext } from './provider';
 
 declare global {
 	interface Window {
 		ethereum: any;
 	}
 }
-
-const provider = new ethers.BrowserProvider(window.ethereum);
 
 const App: Component = () => {
 	if (!window.ethereum) {
@@ -22,7 +21,7 @@ const App: Component = () => {
 	const [signer, setSigner] = createSignal<JsonRpcSigner | null>(null);
 
 	const connectWallet = async () => {
-		setSigner(await getSigner());
+		setSigner(await provider.getSigner());
 	}
 
 	return (
@@ -45,6 +44,8 @@ const MainView: Component = () => {
 	const wallet = useContext(SignerContext)!;
 	const [address, { mutate, refetch }] = createResource(() => wallet.getAddress());
 
+	console.log(provider);
+
 	return (<>
 		<div class="navbar bg-base-100 shadow-sm">
 			<div class="flex-none">
@@ -65,24 +66,8 @@ const MainView: Component = () => {
 			</div>
 		</div>
 
-		<TestContract />
-
 		<PostList />
 	</>);
-}
-
-const CONTRACT_ADDRESS = "0xe6cEbb6bdDc02e86c741555b431f1316eE592C72";
-
-const TestContract: Component = () => {
-	const signer = useContext(SignerContext)!;
-	const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
-	console.log(contract);
-	(async() => {
-		console.log(await contract.set(123));
-	})();
-	return (<>
-
-	</>)
 }
 
 export default App;

@@ -15,6 +15,7 @@ contract DeSci {
 		// Unique id for the paper. Incremented for each new paper.
 		uint256 id;
 		address author;
+		string title;
 		// Defaults to 0.
 		int256 votes;
 		// Review (ids) for the paper.
@@ -35,15 +36,16 @@ contract DeSci {
 
 	// Create a new paper and store it in the contract.
 	// Returns the id of the new paper.
-	function submitPaper() external returns (uint256) {
+	function submitPaper(string memory _title) external returns (uint256) {
 		Paper memory paper;
 
 		uint256 id = paperCount++;
 		paper.id = id;
 		paper.author = msg.sender;
+		paper.title = _title;
 
 		// Store it in the map.
-		papers[id] = paper;
+		papers.push(paper);
 
 		return id;
 	}
