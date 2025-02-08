@@ -3,7 +3,7 @@ import * as provider from "./provider";
 import { A } from "@solidjs/router";
 
 const PostList: Component = () => {
-	const [papers, {}] = createResource(() => provider.getPapers());
+	const [papers, {}] = createResource(() => provider.getAllPapers());
 	createEffect(() => {
 		console.log(papers());
 	})

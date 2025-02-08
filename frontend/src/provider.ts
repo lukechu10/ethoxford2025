@@ -45,7 +45,7 @@ function mapPaperFields(paper: any[]): Paper {
 	return { id, author, title, timestamp, votes: Number(votes), reviews };
 }
 
-export async function getPapers(): Promise<Paper[]> {
+export async function getAllPapers(): Promise<Paper[]> {
 	return (await contract!.getAllPapers()).map(mapPaperFields);
 }
 
@@ -83,4 +83,8 @@ export async function getPaperVotes(paperId: number) {
 
 export async function getReviewVotes(reviewId: number) {
 	return await contract!.getReviewVotes(reviewId);
+}
+
+export async function getReputation(address: string) {
+	return await contract!.getReputation(address)
 }

@@ -98,7 +98,7 @@ contract DeSci {
 	}
 
 	function getPaperVotes(uint256 _paperId) external view returns (int64) {
-		return papers[_paperId].votes;
+		return papers[_paperId].votes; 
 	}
 
 	function getReviewVotes(uint256 _reviewId) external view returns (int64) {

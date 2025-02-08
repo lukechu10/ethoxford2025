@@ -18,6 +18,7 @@ import { Route, Router } from "@solidjs/router";
 const PostList = lazy(() => import("./PaperList"));
 const PostView = lazy(() => import("./PostView"));
 const UploadPaper = lazy(() => import("./UploadPaper"));
+const ProfilePage = lazy(() => import("./Profile"));
 
 declare global {
 	interface Window {
@@ -88,6 +89,7 @@ const MainView: Component = () => {
 			<Route path="/" component={PostList} />
 			<Route path="/paper/:id" component={PostView} />
 			<Route path="/upload" component={UploadPaper} />
+			<Route path="/profile/:profileId" component={ProfilePage}/>
 		</Router>
 	);
 };
