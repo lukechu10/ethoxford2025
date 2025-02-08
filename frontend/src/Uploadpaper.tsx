@@ -13,18 +13,21 @@ const UploadPaper = () => {
 		}
 	};
 
-  const handleSubmit = async () => {
-    try {
-      if (!paperFile()) throw new Error("No file selected.");
-      setMessage("Uploading to Greenfield...");
-      // Pass the description as well if needed
-      const fileURL = await uploadToGreenfield(paperFile()!, description());
-      setMessage(`File uploaded successfully! URL: ${fileURL}`);
-    } catch (error: any) {
-      console.error("Upload error:", error);
-      setMessage(`Error: ${error.message || "Upload failed."}`);
-    }
-  };
+	const handleSubmit = async () => {
+		try {
+			if (!paperFile()) throw new Error("No file selected.");
+			setMessage("Uploading to Greenfield...");
+			// Pass the description as well if needed
+			const fileURL = await uploadToGreenfield(
+				paperFile()!,
+				description()
+			);
+			setMessage(`File uploaded successfully! URL: ${fileURL}`);
+		} catch (error: any) {
+			console.error("Upload error:", error);
+			setMessage(`Error: ${error.message || "Upload failed."}`);
+		}
+	};
 
 	return (
 		<div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">

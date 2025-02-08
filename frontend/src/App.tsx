@@ -53,7 +53,7 @@ const App: Component = () => {
 const MainView: Component = () => {
 	const wallet = useContext(SignerContext)!;
 	const [address, { mutate, refetch }] = createResource(() =>
-		wallet.getAddress(),
+		wallet.getAddress()
 	);
 
 	console.log(provider);
