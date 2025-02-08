@@ -1,62 +1,95 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.26;
 
-contract DeSciPlatform {
+contract DeSci {
+	struct Review {
+		// Unique id for the review. Incremented for each new review.
+		uint256 id;
+		uint256 paperId;
+		address reviewer;
+		string comment;
+		int256 votes;
+	}
 
-    struct Paper {
-        uint256 id;
-        address author;
-        string greenfieldURI;
-        int256 votes;
-    }
+	struct Paper {
+		// Unique id for the paper. Incremented for each new paper.
+		uint256 id;
+		address author;
+		// Defaults to 0.
+		int256 votes;
+		// Review (ids) for the paper.
+		// Defaults to empty array.
+		uint256[] reviews;
+	}
 
-    struct Review {
-        uint256 paperId;
-        address reviewer;
-        string reviewGreenfieldURI;
-        int256 votes;
-    }
+	// Store the reputation of each user on the platform.
+	mapping(address => int256) public reputation;
 
-    struct UserProfile {
-        address userAddress;
-        uint256 reputation;
-        string name;
-    }
+	// Store the papers submitted by id.
+	Paper[] public papers;
+	// Store the reviews submitted by id.
+	mapping(uint256 => Review) public reviews;
 
-    uint256 public paperCount;
-    uint256 public reviewCount;
-    mapping(uint256 => Paper) public papers;
-    mapping(uint256 => Review) public reviews;
-    mapping(address => uint256) public reputation;
+	uint256 public paperCount;
+	uint256 public reviewCount;
 
-    event paperReviewed(uint256 paperId, address indexed reviewer);
-    event paperSubmitted(uint256 paperId, address indexed author, string greenfieldURI);
-    event paperVoted(uint256 paperId, address voter, bool vote);
+	// Create a new paper and store it in the contract.
+	// Returns the id of the new paper.
+	function submitPaper() external returns (uint256) {
+		Paper memory paper;
 
+		uint256 id = paperCount++;
+		paper.id = id;
+		paper.author = msg.sender;
 
-    function submitPaper(string memory _greenfieldURI) external {
-        paperCount ++;
-        papers[paperCount] = Paper(paperCount, msg.sender, _greenfieldURI, 0);
-        emit paperSubmitted(paperCount, msg.sender, _greenfieldURI);
-    }
+		// Store it in the map.
+		papers[id] = paper;
 
-    function reviewPaper(uint256 _paperId, string memory _reviewGreenfieldURI) external {
-        require(papers[_paperId].id != 0, "Paper does not exist");
-        reviewCount ++;
-        reviews[reviewCount] = Review(_paperId, msg.sender, _reviewGreenfieldURI, 0);
-        emit paperReviewed(_paperId, msg.sender);
-    }
+		return id;
+	}
 
-    function makeVote(uint256 _paperId, bool _upvote ) external {
-        require(papers[_paperId].id != 0, "Paper does not exist");
-        if (_upvote) {
-            papers[_paperId].votes += 1;
-            reputation[papers[_paperId].author] += 1;
-        } else {
-            papers[_paperId].votes -= 1;
-            reputation[papers[_paperId].author] -= 1;
-        }
-        emit paperVoted(_paperId, msg.sender, _upvote);
-    }
+	// Submit a new review for a paper.
+	function submitReview(uint256 _paperId, string memory _comment) external {
+		Review memory review;
 
+		uint256 id = reviewCount++;
+		review.id = id;
+		review.paperId = _paperId;
+		review.reviewer = msg.sender;
+		review.comment = _comment;
+
+		reviews[id] = review;
+
+		// Add the review to the paper.
+		papers[_paperId].reviews.push(id);
+	}
+
+	// Upvote/downvote a paper.
+	function votePaper(uint256 _paperId, bool _upvote) external {
+		if (_upvote) {
+			papers[_paperId].votes += 1;
+			reputation[papers[_paperId].author] += 1;
+		} else {
+			papers[_paperId].votes -= 1;
+			reputation[papers[_paperId].author] -= 1;
+		}
+	}
+
+	function voteReview(uint256 _reviewId, bool _upvote) external {
+		if (_upvote) {
+			reviews[_reviewId].votes += 1;
+			reputation[reviews[_reviewId].reviewer] += 1;
+		} else {
+			reviews[_reviewId].votes -= 1;
+			reputation[reviews[_reviewId].reviewer] -= 1;
+		}
+	}
+
+	function getReputation(address _user) external view returns (int256) {
+		return reputation[_user];
+	}
+
+	function getAllPapers() external view returns (Paper[] memory) {
+		return papers;
+	}
 }
