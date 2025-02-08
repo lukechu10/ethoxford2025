@@ -7,7 +7,9 @@ import { createContext } from "solid-js";
 
 console.log(`Contract address: ${CONTRACT_ADDRESS}`);
 
-export const provider = window.ethereum ? new ethers.BrowserProvider(window.ethereum) : null;
+export const provider = window.ethereum
+	? new ethers.BrowserProvider(window.ethereum)
+	: null;
 export let signer: JsonRpcSigner | null = null;
 export let contract: Contract | null = null;
 
@@ -25,8 +27,26 @@ export async function getSigner() {
 
 export const SignerContext = createContext<JsonRpcSigner>();
 
-export async function getPapers() {
-	return await contract!.getAllPapers();
+// Paper data.
+interface Paper {
+	id: number;
+	author: string;
+	title: string;
+	timestamp: Date;
+	votes: number;
+	reviews: any[];
+}
+
+function mapPaperFields(paper: any[]): Paper {
+	const [id, author, title, timestamp_unix, votes, reviews] = paper;
+	// Convert timestamp from unix to JS date.
+	const timestamp = new Date(Number(timestamp_unix) * 1000);
+
+	return { id, author, title, timestamp, votes: Number(votes), reviews };
+}
+
+export async function getPapers(): Promise<Paper[]> {
+	return (await contract!.getAllPapers()).map(mapPaperFields);
 }
 
 export async function submitPaper(title: string) {

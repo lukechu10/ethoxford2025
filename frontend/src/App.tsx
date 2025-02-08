@@ -7,7 +7,7 @@ import {
 	useContext,
 	lazy,
 	type Component,
-    ParentComponent,
+	ParentComponent,
 } from "solid-js";
 import { JsonRpcSigner } from "ethers";
 
@@ -31,10 +31,10 @@ const App: Component = () => {
 	}
 
 	const [signer, setSigner] = createSignal<JsonRpcSigner | null>(null);
-
 	const connectWallet = async () => {
 		setSigner(await provider.getSigner());
 	};
+	connectWallet();
 
 	return (
 		<div class="app">
@@ -56,7 +56,7 @@ const App: Component = () => {
 const Layout: ParentComponent = (props) => {
 	const wallet = useContext(SignerContext)!;
 	const [address, { mutate, refetch }] = createResource(() =>
-		wallet.getAddress()
+		wallet.getAddress(),
 	);
 
 	return (
@@ -79,8 +79,8 @@ const Layout: ParentComponent = (props) => {
 			</div>
 			{props.children}
 		</>
-	)
-}
+	);
+};
 
 const MainView: Component = () => {
 	return (

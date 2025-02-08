@@ -20,7 +20,7 @@ const UploadPaper = () => {
 			// Pass the description as well if needed
 			const fileURL = await uploadToGreenfield(
 				paperFile()!,
-				description()
+				description(),
 			);
 			setMessage(`File uploaded successfully! URL: ${fileURL}`);
 		} catch (error: any) {

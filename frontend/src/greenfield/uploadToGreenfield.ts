@@ -7,7 +7,7 @@ import { client } from "./greenfieldClient";
 const ACCOUNT_PRIVATEKEY = import.meta.env.VITE_ACCOUNT_PRIVATEKEY;
 if (!ACCOUNT_PRIVATEKEY) {
 	throw new Error(
-		"ACCOUNT_PRIVATEKEY is not defined in the environment variables."
+		"ACCOUNT_PRIVATEKEY is not defined in the environment variables.",
 	);
 }
 
@@ -20,7 +20,7 @@ if (!ACCOUNT_PRIVATEKEY) {
  */
 export async function uploadToGreenfield(
 	file: File,
-	description?: string
+	description?: string,
 ): Promise<string> {
 	const bucketName = "research-papers";
 	const objectName = file.name;
@@ -39,7 +39,7 @@ export async function uploadToGreenfield(
 			{
 				type: "ECDSA",
 				privateKey: ACCOUNT_PRIVATEKEY,
-			}
+			},
 		);
 
 		console.log("Upload Response:", uploadRes);
