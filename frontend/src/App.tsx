@@ -62,7 +62,7 @@ const Layout: ParentComponent = (props) => {
 	return (
 		<>
 			<div class="navbar bg-base-100 shadow-sm">
-				<div class="flex-none">DeSci</div>
+				<div class="flex-none">ChainReview</div>
 				<div class="flex-1"></div>
 				<div class="flex-none">
 					<Suspense fallback={<div>Loading...</div>}>

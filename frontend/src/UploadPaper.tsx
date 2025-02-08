@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
-import { uploadToGreenfield } from "./greenfield/uploadToGreenfield";
+import * as greenfield from "./greenfield";
+console.log(greenfield);
 
 const UploadPaper = () => {
 	const [paperFile, setPaperFile] = createSignal<File | null>(null);
@@ -18,11 +19,11 @@ const UploadPaper = () => {
 			if (!paperFile()) throw new Error("No file selected.");
 			setMessage("Uploading to Greenfield...");
 			// Pass the description as well if needed
-			const fileURL = await uploadToGreenfield(
-				paperFile()!,
-				description(),
-			);
-			setMessage(`File uploaded successfully! URL: ${fileURL}`);
+			//const fileURL = await uploadToGreenfield(
+			//	paperFile()!,
+			//	description(),
+			//);
+			//setMessage(`File uploaded successfully! URL: ${fileURL}`);
 		} catch (error: any) {
 			console.error("Upload error:", error);
 			setMessage(`Error: ${error.message || "Upload failed."}`);
