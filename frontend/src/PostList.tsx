@@ -1,11 +1,12 @@
 import { Component, createEffect, createResource, For, Show } from "solid-js";
 import * as provider from "./provider";
+import { A } from "@solidjs/router";
 
 const PostList: Component = () => {
 	const [papers, {}] = createResource(() => provider.getPapers());
 	createEffect(() => {
 		console.log(papers());
-	});
+	})
 
 	return (
 		<div class="max-w-prose mx-auto">
@@ -15,7 +16,7 @@ const PostList: Component = () => {
 				<Show when={papers()}>
 					<For each={papers()}>
 						{(paper) => (
-							<li class="list-row">
+							<A href={`/paper/${paper.id}`} class="list-row">
 								<div>
 									<i class="bi bi-arrow-up"></i>
 									<p>{paper.votes}</p>
@@ -33,7 +34,7 @@ const PostList: Component = () => {
 
 									<p>TODO: Abstract</p>
 								</div>
-							</li>
+							</A>
 						)}
 					</For>
 				</Show>
