@@ -25,8 +25,8 @@ const PostView: Component = () => {
 					on {paper()!.timestamp.toDateString()}
 				</p>
 			</div>
-			<div class="max-w-200 px-5 flex flex-row">
-				<div>
+			<div class="w-full px-20 mb-10 flex flex-row gap-5">
+				<div class="flex-grow">
 					<iframe
 						title="pdf"
 						src={EXAMPLE_PDF}
@@ -35,15 +35,16 @@ const PostView: Component = () => {
 						class="mt-10"
 					></iframe>
 				</div>
-				<div>
-					<div class="mt-10 flex flex-row justify-items-around">
+				<div class="flex-grow mt-10">
+					<h2 class="font-bold text-3xl my-5">Kudos: {paper()!.votes}</h2>
+					<div class="mt-5 flex flex-row justify-items-around">
 						<button
 							type="button"
 							class="btn bg-orange-600 hover:bg-orange-700 w-12 h-12 rounded-full"
 						>
 							+1
 						</button>
-						<div class="w-10" />
+						<div class="w-7" />
 						<button
 							type="button"
 							class="btn bg-gray-600 hover:bg-gray-700 w-12 h-12 rounded-full"
@@ -51,6 +52,8 @@ const PostView: Component = () => {
 							-1
 						</button>
 					</div>
+
+					<div class="divider" />
 
 					<div class="reviews">
 						<h2 class="font-bold text-3xl my-5">Comments</h2>
