@@ -16,7 +16,7 @@ import { SignerContext } from "./provider";
 import { A, Route, Router } from "@solidjs/router";
 
 const PaperList = lazy(() => import("./PaperList"));
-const PostView = lazy(() => import("./PostView"));
+const PaperView = lazy(() => import("./PaperView"));
 const UploadPaper = lazy(() => import("./UploadPaper"));
 const ProfilePage = lazy(() => import("./Profile"));
 
@@ -96,7 +96,7 @@ const MainView: Component = () => {
 	return (
 		<Router root={Layout}>
 			<Route path="/" component={PaperList} />
-			<Route path="/paper/:id" component={PostView} />
+			<Route path="/paper/:id" component={PaperView} />
 			<Route path="/upload" component={UploadPaper} />
 			<Route path="/profile/:profileId" component={ProfilePage}/>
 		</Router>

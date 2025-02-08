@@ -49,6 +49,10 @@ export async function getAllPapers(): Promise<Paper[]> {
 	return (await contract!.getAllPapers()).map(mapPaperFields);
 }
 
+export async function getPaper(paperId: number): Promise<Paper> {
+	return mapPaperFields(await contract!.papers(paperId));
+}
+
 export async function submitPaper(title: string) {
 	const tx = await contract!.submitPaper(title);
 	await tx.wait();
