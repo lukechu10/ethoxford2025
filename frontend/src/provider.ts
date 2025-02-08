@@ -7,7 +7,7 @@ import { createContext } from "solid-js";
 
 console.log(`Contract address: ${CONTRACT_ADDRESS}`);
 
-export const provider = new ethers.BrowserProvider(window.ethereum);
+export const provider = window.ethereum ? new ethers.BrowserProvider(window.ethereum) : null;
 export let signer: JsonRpcSigner | null = null;
 export let contract: Contract | null = null;
 
@@ -15,9 +15,9 @@ export let contract: Contract | null = null;
 	* Return signer from MetaMask.
 	* */
 export async function getSigner() {
-	await provider.send("eth_requestAccounts", []);
+	await provider!.send("eth_requestAccounts", []);
 
-	signer = await provider.getSigner();
+	signer = await provider!.getSigner();
 	contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
 	return signer;
