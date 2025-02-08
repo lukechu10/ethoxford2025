@@ -70,6 +70,15 @@ const PostView: Component = () => {
 								{() => <p>TODO: Review</p>}
 							</For>
 						</ul>
+
+						<textarea
+							class="block w-full p-3 mt-5 border rounded-md"
+							rows="4"
+							placeholder="Write a comment..."
+						/>
+						<button class="mt-5 px-8 btn bg-orange-600 hover:bg-orange-700 rounded-full">
+							Submit Comment
+						</button>
 					</div>
 				</div>
 			</div>
