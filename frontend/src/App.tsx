@@ -15,9 +15,9 @@ import * as provider from "./provider";
 import { SignerContext } from "./provider";
 import { Route, Router } from "@solidjs/router";
 
-const PostList = lazy(() => import("./PostList"));
+const PostList = lazy(() => import("./PaperList"));
 const PostView = lazy(() => import("./PostView"));
-const UploadPaper = lazy(() => import("./Uploadpaper"));
+const UploadPaper = lazy(() => import("./UploadPaper"));
 
 declare global {
 	interface Window {
