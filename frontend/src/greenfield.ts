@@ -58,10 +58,12 @@ export const createObject = async () => {
 	const offchainAuthRes =
 		await client.offchainauth.genOffChainAuthKeyPairAndUpload(
 			{
-				sps: [{
-					address: sp.primarySpAddress,
-					endpoint: sp.endpoint,
-				}],
+				sps: [
+					{
+						address: sp.primarySpAddress,
+						endpoint: sp.endpoint,
+					},
+				],
 				chainId: 5600,
 				expirationMs: 5 * 24 * 60 * 60 * 1000,
 				domain: window.location.origin,
@@ -80,7 +82,7 @@ export const createObject = async () => {
 		paymentAddress: address,
 	});
 	const simulateInfo = await createBucketTx.simulate({
-		denom: 'BNB',
+		denom: "BNB",
 	});
 
 	const res = await createBucketTx.broadcast({
@@ -91,7 +93,7 @@ export const createObject = async () => {
 		granter: "",
 		signTypedDataCallback: async (addr, msg) => {
 			return provider.provider!.send("eth_signTypedData_v4", [addr, msg]);
-		}
+		},
 	});
 
 	if (res.code !== 0) {

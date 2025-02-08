@@ -56,19 +56,19 @@ const App: Component = () => {
 
 const Layout: ParentComponent = (props) => {
 	const wallet = useContext(SignerContext)!;
-	const [address, {}] = createResource(() =>
-		wallet.getAddress(),
-	);
+	const [address, {}] = createResource(() => wallet.getAddress());
 
 	const copyAddress = () => {
 		navigator.clipboard.writeText(address()!);
-	}
+	};
 
 	return (
 		<>
 			<div class="navbar bg-slate-800 border-b-2 border-b-slate-600 shadow-sm font-mono">
 				<div class="pl-5 flex-none">
-					<A href="/" class="text-xl font-bold font-mono">ChainReview</A>
+					<A href="/" class="text-xl font-bold font-mono">
+						ChainReview
+					</A>
 				</div>
 				<div class="flex-1"></div>
 				<div class="flex-none">
@@ -80,7 +80,10 @@ const Layout: ParentComponent = (props) => {
 							<Match when={address()}>
 								<span class="mr-5 p-3 bg-primary rounded-xl">
 									{address()!.substring(0, 10)!}...
-									<i class="bi bi-clipboard ml-4 inline-block transition hover:-translate-y-0.5 cursor-pointer" onClick={copyAddress}></i>
+									<i
+										class="bi bi-clipboard ml-4 inline-block transition hover:-translate-y-0.5 cursor-pointer"
+										onClick={copyAddress}
+									></i>
 								</span>
 							</Match>
 						</Switch>
@@ -98,7 +101,7 @@ const MainView: Component = () => {
 			<Route path="/" component={PaperList} />
 			<Route path="/paper/:id" component={PaperView} />
 			<Route path="/upload" component={UploadPaper} />
-			<Route path="/profile/:profileId" component={ProfilePage}/>
+			<Route path="/profile/:profileId" component={ProfilePage} />
 		</Router>
 	);
 };

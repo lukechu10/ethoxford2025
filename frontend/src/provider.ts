@@ -28,7 +28,7 @@ export async function getSigner() {
 export const SignerContext = createContext<JsonRpcSigner>();
 
 // Paper data.
-interface Paper {
+export interface Paper {
 	id: number;
 	author: string;
 	title: string;
@@ -90,5 +90,5 @@ export async function getReviewVotes(reviewId: number) {
 }
 
 export async function getReputation(address: string) {
-	return await contract!.getReputation(address)
+	return await contract!.getReputation(address);
 }

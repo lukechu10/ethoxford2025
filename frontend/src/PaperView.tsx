@@ -23,7 +23,6 @@ const posts = [
 	},
 ];
 
-
 const PostView: Component = () => {
 	const params = useParams();
 	const paperId = params.id;
@@ -36,13 +35,25 @@ const PostView: Component = () => {
 			<div class="max-w-prose mx-auto pt-5">
 				<h1 class="font-bold text-4xl">{paper()!.title}</h1>
 				<p class="text-gray-400">
-					By <A href={`/profile/${paper()!.author}`} class="font-mono font-bold text-orange-200">{paper()!.author}</A> on {paper()!.timestamp.toDateString()}
+					By{" "}
+					<A
+						href={`/profile/${paper()!.author}`}
+						class="font-mono font-bold text-orange-200"
+					>
+						{paper()!.author}
+					</A>{" "}
+					on {paper()!.timestamp.toDateString()}
 				</p>
 
-				<iframe title="pdf" src={EXAMPLE_PDF} height="500" width="100%" class="mt-10"></iframe>
+				<iframe
+					title="pdf"
+					src={EXAMPLE_PDF}
+					height="500"
+					width="100%"
+					class="mt-10"
+				></iframe>
 
-				<div class="reviews">
-				</div>
+				<div class="reviews"></div>
 			</div>
 		</Show>
 	);
