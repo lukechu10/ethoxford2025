@@ -12,8 +12,8 @@ export let signer: JsonRpcSigner | null = null;
 export let contract: Contract | null = null;
 
 /**
-	* Return signer from MetaMask.
-	* */
+ * Return signer from MetaMask.
+ * */
 export async function getSigner() {
 	await provider!.send("eth_requestAccounts", []);
 
@@ -64,4 +64,3 @@ export async function getPaperVotes(paperId: number) {
 export async function getReviewVotes(reviewId: number) {
 	return await contract!.getReviewVotes(reviewId);
 }
-

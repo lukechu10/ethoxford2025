@@ -1,60 +1,71 @@
-import { For } from "solid-js";
-
-const uploadedPapers = [
-  {
-    id: 1,
-    title: "Quantum Computing for Beginners",
-    author: "Dr. Alice",
-    description: "An introduction to quantum computing and its applications.",
-    fileURL: "https://testnet.greenfield.bnbchain.org/quantum-computing.pdf",
-    uploadedAt: "2024-02-08",
-  },
-  {
-    id: 2,
-    title: "Blockchain and DeSci Revolution",
-    author: "Dr. Bob",
-    description: "Exploring how decentralized science (DeSci) can transform research.",
-    fileURL: "https://testnet.greenfield.bnbchain.org/blockchain-desc.pdf",
-    uploadedAt: "2024-02-07",
-  },
-];
+import { createSignal } from "solid-js";
+import { uploadToGreenfield } from "./greenfield/uploadToGreenfield";
 
 const UploadPaper = () => {
-  return (
-    <div>
-      <h1 >Upload Your Research Paper</h1>
+	const [paperFile, setPaperFile] = createSignal<File | null>(null);
+	const [description, setDescription] = createSignal("");
+	const [message, setMessage] = createSignal("");
 
-      {/* Upload Form */}
-      <div class="mb-6">
-        <label class="block mb-2 font-semibold">Select PDF File</label>
-        <input type="file" accept=".pdf" class="block w-full p-2 border rounded-md mb-4" />
+	const handleFileChange = (e: Event) => {
+		const target = e.target as HTMLInputElement;
+		if (target.files && target.files.length > 0) {
+			setPaperFile(target.files[0]);
+		}
+	};
 
-        <label class="block mb-2 font-semibold">Add a Description</label>
-        <textarea class="block w-full p-3 border rounded-md" rows="4" placeholder="Write a description..."></textarea>
+	const handleSubmit = async () => {
+		try {
+			if (!paperFile()) throw new Error("No file selected.");
+			setMessage("Uploading to Greenfield...");
+			// Pass the description as well if needed
+			const fileURL = await uploadToGreenfield(
+				paperFile()!,
+				description()
+			);
+			setMessage(`File uploaded successfully! URL: ${fileURL}`);
+		} catch (error: any) {
+			console.error("Upload error:", error);
+			setMessage(`Error: ${error.message || "Upload failed."}`);
+		}
+	};
 
-        <button class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
-          Upload Paper
-        </button>
-      </div>
+	return (
+		<div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+			<h1 class="text-2xl font-bold mb-4">Upload Your Research Paper</h1>
 
-      {/* Uploaded Papers */}
-      <h2 class="text-xl font-bold mb-3">Uploaded Papers</h2>
-      <div class="space-y-4">
-        <For each={uploadedPapers}>
-          {(paper) => (
-            <div class="border p-4 rounded-lg shadow-sm">
-              <h3 class="text-lg font-bold">{paper.title}</h3>
-              <p class="text-gray-600">By {paper.author} - {paper.uploadedAt}</p>
-              <p class="text-gray-700">{paper.description}</p>
-              <a href={paper.fileURL} target="_blank" class="text-blue-500 hover:underline">
-                View Paper
-              </a>
-            </div>
-          )}
-        </For>
-      </div>
-    </div>
-  );
+			<div class="mb-6">
+				<label class="block mb-2 font-semibold">Select PDF File</label>
+				<input
+					type="file"
+					accept=".pdf"
+					class="block w-full p-2 border rounded-md mb-4"
+					onChange={handleFileChange}
+				/>
+
+				<label class="block mb-2 font-semibold">
+					Add a Description
+				</label>
+				<textarea
+					class="block w-full p-3 border rounded-md"
+					rows="4"
+					placeholder="Write a description..."
+					value={description()}
+					onInput={(e) => setDescription(e.currentTarget.value)}
+				></textarea>
+
+				<button
+					class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
+					onClick={handleSubmit}
+				>
+					Upload Paper
+				</button>
+			</div>
+
+			{message() && (
+				<p class="mt-4 text-center text-gray-700">{message()}</p>
+			)}
+		</div>
+	);
 };
 
 export default UploadPaper;
