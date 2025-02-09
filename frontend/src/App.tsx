@@ -30,6 +30,7 @@ const App: Component = () => {
 	if (!window.ethereum) {
 		return <div>Install the MetaMask browser extension.</div>;
 	}
+	console.log(provider);
 
 	const [signer, setSigner] = createSignal<JsonRpcSigner | null>(null);
 	const connectWallet = async () => {
@@ -66,7 +67,10 @@ const Layout: ParentComponent = (props) => {
 		<>
 			<div class="navbar bg-slate-800 border-b-2 border-b-slate-600 shadow-sm font-mono">
 				<div class="pl-5 flex-none">
-					<A href="/" class="text-xl font-bold font-mono inline-block px-3 py-1 hover:bg-slate-700 rounded-lg transition-colors">
+					<A
+						href="/"
+						class="text-xl font-bold font-mono inline-block px-3 py-1 hover:bg-slate-700 rounded-lg transition-colors"
+					>
 						ChainReview
 					</A>
 				</div>

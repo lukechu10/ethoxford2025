@@ -18,7 +18,7 @@ contract DeSci {
 		string title;
 		uint256 timestamp;
 		// Location of the paper. HTTP URL for now.
-		string pdfUrl;
+		// string pdfUrl;
 
 		// Defaults to 0.
 		int64 votes;
@@ -102,6 +102,10 @@ contract DeSci {
 
 	function getPaperVotes(uint256 _paperId) external view returns (int64) {
 		return papers[_paperId].votes; 
+	}
+
+	function getPaperReviews(uint256 _paperId) external view returns (uint256[] memory) {
+		return papers[_paperId].reviews;
 	}
 
 	function getReviewVotes(uint256 _reviewId) external view returns (int64) {

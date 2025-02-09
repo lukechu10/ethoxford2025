@@ -37,6 +37,11 @@ export interface Paper {
 	reviews: any[];
 }
 
+export interface Review {
+	comment: string;
+	votes: number;
+}
+
 function mapPaperFields(paper: any[]): Paper {
 	const [id, author, title, timestamp_unix, votes, reviews] = paper;
 	// Convert timestamp from unix to JS date.
@@ -45,12 +50,21 @@ function mapPaperFields(paper: any[]): Paper {
 	return { id, author, title, timestamp, votes: Number(votes), reviews };
 }
 
+function mapReviewFields(review: any[]): Review {
+	const [_a, _b, _c, comment, votes] = review;
+	return { comment, votes: Number(votes) };
+}
+
 export async function getAllPapers(): Promise<Paper[]> {
 	return (await contract!.getAllPapers()).map(mapPaperFields);
 }
 
 export async function getPaper(paperId: number): Promise<Paper> {
 	return mapPaperFields(await contract!.papers(paperId));
+}
+
+export async function getReview(reviewId: number): Promise<Review> {
+	return mapReviewFields(await contract!.reviews(reviewId));
 }
 
 export async function submitPaper(title: string) {
@@ -91,4 +105,8 @@ export async function getReviewVotes(reviewId: number) {
 
 export async function getReputation(address: string) {
 	return await contract!.getReputation(address);
+}
+
+export async function getPaperReviews(paperId: number) {
+	return await contract!.getPaperReviews(paperId);
 }
