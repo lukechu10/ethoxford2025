@@ -166,22 +166,22 @@ ABI = [
         "name": "ReviewFlagged",
         "type": "event"
     }
-] # Replace with actual ABI
+] 
 
 # ✅ Load the smart contract
 contract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=ABI)
 
-# ✅ Wallet details (DO NOT hardcode private keys)
 WALLET_ADDRESS = "0xf845E76d6Cbc05b091bA19c4014443c529C866b6"
-PRIVATE_KEY = os.getenv("PRIVATE_KEY")  # Load securely from .env file
+PRIVATE_KEY = "187267931dd91a58ce59d5119c1bde3d452bf409bf0708ca41eea43ec60ad81f"
+# PRIVATE_KEY = os.getenv("PRIVATE_KEY")  # Load securely from .env file
 
-# ✅ AI Moderation API URL
+# AI Moderation API URL
 MODERATION_API_URL = "http://localhost:5000/moderate_comment"
 
-# ✅ Store the last processed block
+# Store the last processed block
 LAST_PROCESSED_BLOCK = w3.eth.block_number - 3  # Start 3 blocks behind to catch events
 
-# ✅ Helper function to sign and send transactions
+#Helper function to sign and send transactions
 def send_transaction(tx):
     """Signs and sends a transaction to the blockchain."""
     tx["nonce"] = w3.eth.getTransactionCount(WALLET_ADDRESS)
@@ -189,7 +189,7 @@ def send_transaction(tx):
     tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
     return w3.toHex(tx_hash)
 
-# ✅ Monitor blockchain events (Fixed for "Method Disabled")
+# Monitor blockchain events 
 def monitor_events():
     """Monitors events emitted by the smart contract & triggers AI moderation."""
     global LAST_PROCESSED_BLOCK
@@ -199,7 +199,7 @@ def monitor_events():
         try:
             latest_block = w3.eth.block_number
 
-            # ✅ Fetch logs since the last processed block
+            #  Fetch logs since the last processed block
             logs = w3.eth.get_logs({
                 "fromBlock": max(0, LAST_PROCESSED_BLOCK),
                 "toBlock": latest_block,
@@ -207,19 +207,19 @@ def monitor_events():
                 "topics": ["0x" + w3.keccak(text="ReputationAdjusted(address,int64)").hex()]
             })
 
-            # ✅ Process each new event
+            # Process each new event
             for log in logs:
                 process_event(log)
 
-            # ✅ Update last processed block
+            #  Update last processed block
             LAST_PROCESSED_BLOCK = latest_block
 
         except Exception as e:
             print(f"❌ Error monitoring events: {e}")
 
-        time.sleep(10)  # ✅ Reduce polling frequency to avoid rate limits
+        time.sleep(10)  # Reduce polling frequency to avoid rate limits
 
-# ✅ Process ReputationAdjusted Events
+# Process ReputationAdjusted Events
 def process_event(log):
     """Processes a detected ReputationAdjusted event."""
     try:
@@ -228,17 +228,17 @@ def process_event(log):
         new_reputation = event_data["args"]["newReputation"]
         print(f"📢 Reputation Updated: {user} -> {new_reputation}")
 
-        # ✅ AI Moderation for negative reputation
+        # AI Moderation for negative reputation
         if new_reputation < 0:
             moderate_comment(user)
 
     except Exception as e:
         print(f"❌ Error processing event: {e}")
 
-# ✅ Call AI Moderation API
+# Call AI Moderation API
 def moderate_comment(user):
     """Sends a sample comment to AI Moderation API for toxicity check."""
-    comment = "This research is garbage"  # Replace with actual comment source
+    comment = "This research is garbage"  
 
     try:
         response = requests.post(MODERATION_API_URL, json={"comment": comment})
