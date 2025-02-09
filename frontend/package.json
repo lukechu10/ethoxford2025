@@ -19,6 +19,7 @@
 	},
 	"dependencies": {
 		"@bnb-chain/greenfield-js-sdk": "^2.2.0",
+		"@huggingface/transformers": "^3.3.3",
 		"@solid-primitives/memo": "^1.4.0",
 		"@solidjs/router": "^0.15.3",
 		"@tailwindcss/vite": "^4.0.4",

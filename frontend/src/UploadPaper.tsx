@@ -1,10 +1,13 @@
 import { createSignal } from "solid-js";
 import * as provider from "./provider";
+import { classify } from "./ai";
 
 const UploadPaper = () => {
 	const [title, setTitle] = createSignal("");
 	const [uri, setUri] = createSignal("");
 	const [description, setDescription] = createSignal("");
+
+	const [disabled, setDisabled] = createSignal(false);
 	const [message, setMessage] = createSignal("");
 
 	const handleSubmit = async () => {
@@ -16,7 +19,17 @@ const UploadPaper = () => {
 			return;
 		}
 
+		const result = await classify(descriptionTrimmed);
+		const toxicScore = (result[0] as any).score;
+		console.log(toxicScore);
+		if (toxicScore > 0.5) {
+			setMessage("Hateful content is against our guidelines.");
+			setDisabled(false);
+			return;
+		}
+
 		setMessage("Uploading...");
+		setDisabled(true);
 
 		// TODO: calculate hash of the file.
 		await provider.submitPaper(
@@ -27,6 +40,8 @@ const UploadPaper = () => {
 		);
 
 		setMessage("Paper uploaded successfully.");
+		setDisabled(false);
+
 		setTitle("");
 		setUri("");
 		setDescription("");
@@ -67,6 +82,7 @@ const UploadPaper = () => {
 				<button
 					class="btn bg-orange-600 hover:bg-orange-700 rounded-full mt-4 w-full"
 					onClick={handleSubmit}
+					disabled={disabled()}
 				>
 					Upload Paper
 				</button>
