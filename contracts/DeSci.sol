@@ -11,14 +11,26 @@ contract DeSci {
         bool flagged; // Indicates if the review has been flagged
     }
 
-    struct Paper {
-        uint256 id; // Unique id for the paper
-        address author; // Address of the paper author
-        string title; // Title of the paper
-        uint256 timestamp; // Submission timestamp
-        int64 votes; // Upvotes/downvotes for the paper
-        uint256[] reviews; // Array of review IDs for the paper
-    }
+	struct Paper {
+		// Unique id for the paper. Incremented for each new paper.
+		uint256 id;
+		address author;
+		string title;
+		uint256 timestamp;
+		// Where is the paper stored?
+		string fileUri;
+		// Hash of the paper.
+		string fileHash;
+
+		// Short description of the paper.
+		string desc;
+
+		// Defaults to 0.
+		int64 votes;
+		// Review (ids) for the paper.
+		// Defaults to empty array.
+		uint256[] reviews;
+	}
 
     mapping(address => int64) public reputation; // User reputation scores
     Paper[] public papers; // Array of all papers
@@ -33,9 +45,10 @@ contract DeSci {
     event ReputationAdjusted(address indexed user, int64 newReputation);
     event ReviewFlagged(uint256 indexed reviewId, address indexed reviewer);
 
-    // Submit a new paper
-    function submitPaper(string memory _title) external returns (uint256) {
-        Paper memory paper;
+	// Create a new paper and store it in the contract.
+	// Returns the id of the new paper.
+	function submitPaper(string memory _title, string memory _fileUri, string memory _fileHash, string memory _desc) external returns (uint256) {
+		Paper memory paper;
 
         uint256 id = paperCount++;
         paper.id = id;
@@ -43,7 +56,13 @@ contract DeSci {
         paper.title = _title;
         paper.timestamp = block.timestamp;
 
-        papers.push(paper);
+		paper.fileUri = _fileUri;
+		paper.fileHash = _fileHash;
+
+		paper.desc = _desc;
+
+		// Store it in the map.
+		papers.push(paper);
 
         emit PaperSubmitted(id, msg.sender, _title);
         return id;
@@ -92,9 +111,13 @@ contract DeSci {
         emit ReputationAdjusted(reviews[_reviewId].reviewer, reputation[reviews[_reviewId].reviewer]);
     }
 
-    // Flag a review as toxic or spam (called by AI agent or moderators)
-    function flagReview(uint256 _reviewId) external {
-        reviews[_reviewId].flagged = true;
+	function getPaperVotes(uint256 _paperId) external view returns (int64) {
+		return papers[_paperId].votes; 
+	}
+
+	function getPaperReviews(uint256 _paperId) external view returns (uint256[] memory) {
+		return papers[_paperId].reviews;
+	}
 
         // Penalize the reviewer's reputation
         reputation[reviews[_reviewId].reviewer] -= 10;

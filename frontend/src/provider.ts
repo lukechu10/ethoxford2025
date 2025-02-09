@@ -28,29 +28,64 @@ export async function getSigner() {
 export const SignerContext = createContext<JsonRpcSigner>();
 
 // Paper data.
-interface Paper {
+export interface Paper {
 	id: number;
 	author: string;
 	title: string;
 	timestamp: Date;
+	fileUri: string;
+	fileHash: string;
+	desc: string;
 	votes: number;
-	reviews: any[];
+}
+
+export interface Review {
+	comment: string;
+	votes: number;
 }
 
 function mapPaperFields(paper: any[]): Paper {
-	const [id, author, title, timestamp_unix, votes, reviews] = paper;
+	const [id, author, title, timestamp_unix, fileUri, fileHash, desc, votes] =
+		paper;
 	// Convert timestamp from unix to JS date.
 	const timestamp = new Date(Number(timestamp_unix) * 1000);
 
-	return { id, author, title, timestamp, votes: Number(votes), reviews };
+	return {
+		id,
+		author,
+		title,
+		timestamp,
+		fileUri,
+		fileHash,
+		desc,
+		votes: Number(votes),
+	};
 }
 
-export async function getPapers(): Promise<Paper[]> {
+function mapReviewFields(review: any[]): Review {
+	const [_a, _b, _c, comment, votes] = review;
+	return { comment, votes: Number(votes) };
+}
+
+export async function getAllPapers(): Promise<Paper[]> {
 	return (await contract!.getAllPapers()).map(mapPaperFields);
 }
 
-export async function submitPaper(title: string) {
-	const tx = await contract!.submitPaper(title);
+export async function getPaper(paperId: number): Promise<Paper> {
+	return mapPaperFields(await contract!.papers(paperId));
+}
+
+export async function getReview(reviewId: number): Promise<Review> {
+	return mapReviewFields(await contract!.reviews(reviewId));
+}
+
+export async function submitPaper(
+	title: string,
+	fileUri: string,
+	fileHash: string,
+	desc: string,
+) {
+	const tx = await contract!.submitPaper(title, fileUri, fileHash, desc);
 	await tx.wait();
 
 	return tx;
@@ -83,4 +118,12 @@ export async function getPaperVotes(paperId: number) {
 
 export async function getReviewVotes(reviewId: number) {
 	return await contract!.getReviewVotes(reviewId);
+}
+
+export async function getReputation(address: string) {
+	return await contract!.getReputation(address);
+}
+
+export async function getPaperReviews(paperId: number) {
+	return await contract!.getPaperReviews(paperId);
 }
