@@ -33,8 +33,9 @@ export interface Paper {
 	author: string;
 	title: string;
 	timestamp: Date;
+	fileUri: string;
+	fileHash: string;
 	votes: number;
-	reviews: any[];
 }
 
 export interface Review {
@@ -43,11 +44,19 @@ export interface Review {
 }
 
 function mapPaperFields(paper: any[]): Paper {
-	const [id, author, title, timestamp_unix, votes, reviews] = paper;
+	const [id, author, title, timestamp_unix, fileUri, fileHash, votes] = paper;
 	// Convert timestamp from unix to JS date.
 	const timestamp = new Date(Number(timestamp_unix) * 1000);
 
-	return { id, author, title, timestamp, votes: Number(votes), reviews };
+	return {
+		id,
+		author,
+		title,
+		timestamp,
+		fileUri,
+		fileHash,
+		votes: Number(votes),
+	};
 }
 
 function mapReviewFields(review: any[]): Review {
@@ -67,8 +76,12 @@ export async function getReview(reviewId: number): Promise<Review> {
 	return mapReviewFields(await contract!.reviews(reviewId));
 }
 
-export async function submitPaper(title: string) {
-	const tx = await contract!.submitPaper(title);
+export async function submitPaper(
+	title: string,
+	fileUri: string,
+	fileHash: string,
+) {
+	const tx = await contract!.submitPaper(title, fileUri, fileHash);
 	await tx.wait();
 
 	return tx;

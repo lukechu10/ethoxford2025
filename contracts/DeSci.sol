@@ -17,8 +17,10 @@ contract DeSci {
 		address author;
 		string title;
 		uint256 timestamp;
-		// Location of the paper. HTTP URL for now.
-		// string pdfUrl;
+		// Where is the paper stored?
+		string fileUri;
+		// Hash of the paper.
+		string fileHash;
 
 		// Defaults to 0.
 		int64 votes;
@@ -40,7 +42,7 @@ contract DeSci {
 
 	// Create a new paper and store it in the contract.
 	// Returns the id of the new paper.
-	function submitPaper(string memory _title) external returns (uint256) {
+	function submitPaper(string memory _title, string memory _fileUri, string memory _fileHash) external returns (uint256) {
 		Paper memory paper;
 
 		uint256 id = paperCount++;
@@ -48,6 +50,9 @@ contract DeSci {
 		paper.author = msg.sender;
 		paper.title = _title;
 		paper.timestamp = block.timestamp;
+
+		paper.fileUri = _fileUri;
+		paper.fileHash = _fileHash;
 
 		// Store it in the map.
 		papers.push(paper);
