@@ -14,7 +14,8 @@ jobs:
 
       # Install NodeJS
       - uses: actions/setup-node@v4
-        node-version: 22.x
+        with:
+          node-version: 22.x
 
       - run: npm ci
       - run: npm run build
