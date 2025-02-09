@@ -15,11 +15,8 @@ def check_toxicity():
     if not text:
         return jsonify({"error": "No text provided"}), 400
 
-    result = toxicity_model(text)[0]
-    feedback = "Your comment appears toxic. Please use respectful language." if result["label"] == "toxic" and result["score"] > 0.7 else "No issues detected."
-
-    return jsonify({"label": result["label"], "score": result["score"], "feedback": feedback})
-
+    result = toxicity_model(text)[0]  # Classify the text
+    return jsonify({"label": result["label"], "score": result["score"]})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
