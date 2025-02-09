@@ -31,23 +31,21 @@ const UploadPaper = () => {
 	};
 
 	return (
-		<div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-			<h1 class="text-2xl font-bold mb-4">Upload Your Research Paper</h1>
+		<div class="max-w-prose mx-auto mt-5">
+			<h1 class="text-4xl font-bold mb-4">Upload Your Research Paper</h1>
 
 			<div class="mb-6">
-				<label class="block mb-2 font-semibold">Select PDF File</label>
+				<label class="block mb-2 font-semibold">Paper URL</label>
 				<input
-					type="file"
-					accept=".pdf"
-					class="block w-full p-2 border rounded-md mb-4"
-					onChange={handleFileChange}
+					placeholder="Enter the URL of the paper"
+					class="block w-full p-2 rounded-md mb-4 border-none outline-hidden bg-slate-800 hover:bg-slate-700 focus:bg-slate-900"
 				/>
 
 				<label class="block mb-2 font-semibold">
 					Add a Description
 				</label>
 				<textarea
-					class="block w-full p-3 border rounded-md"
+					class="block w-full p-3 rounded-md border-none outline-hidden bg-slate-800 hover:bg-slate-700 focus:bg-slate-900"
 					rows="4"
 					placeholder="Write a description..."
 					value={description()}
@@ -55,7 +53,7 @@ const UploadPaper = () => {
 				></textarea>
 
 				<button
-					class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
+					class="btn bg-orange-600 hover:bg-orange-700 rounded-full mt-4 w-full"
 					onClick={handleSubmit}
 				>
 					Upload Paper
@@ -63,7 +61,7 @@ const UploadPaper = () => {
 			</div>
 
 			{message() && (
-				<p class="mt-4 text-center text-gray-700">{message()}</p>
+				<p class="mt-4 text-center text-gray-400">{message()}</p>
 			)}
 		</div>
 	);
