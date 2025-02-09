@@ -57,7 +57,7 @@ const App: Component = () => {
 
 const Layout: ParentComponent = (props) => {
 	const wallet = useContext(SignerContext)!;
-	const [address, {}] = createResource(() => wallet.getAddress());
+	const [address, { }] = createResource(() => wallet.getAddress());
 
 	const copyAddress = () => {
 		navigator.clipboard.writeText(address()!);
@@ -106,7 +106,7 @@ const Layout: ParentComponent = (props) => {
 
 const MainView: Component = () => {
 	return (
-		<Router root={Layout}>
+		<Router root={Layout} base={import.meta.env.BASE_URL}>
 			<Route path="/" component={PaperList} />
 			<Route path="/paper/:id" component={PaperView} />
 			<Route path="/upload" component={UploadPaper} />
