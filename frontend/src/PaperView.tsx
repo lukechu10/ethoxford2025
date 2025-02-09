@@ -9,7 +9,6 @@ import {
 } from "solid-js";
 import { A, useParams } from "@solidjs/router";
 import * as provider from "./provider";
-import EXAMPLE_PDF from "../assets/dummy.pdf";
 import { createLatest } from "@solid-primitives/memo";
 
 const PostView: Component = () => {
@@ -50,7 +49,7 @@ const PostView: Component = () => {
 				<div class="flex-grow">
 					<iframe
 						title="pdf"
-						src={EXAMPLE_PDF}
+						src={paper()!.fileUri}
 						height="500"
 						width="100%"
 						class="mt-10"

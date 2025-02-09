@@ -1,33 +1,35 @@
 import { createSignal } from "solid-js";
-import * as greenfield from "./greenfield";
-console.log(greenfield);
+import * as provider from "./provider";
 
 const UploadPaper = () => {
-	const [paperFile, setPaperFile] = createSignal<File | null>(null);
+	const [title, setTitle] = createSignal("");
+	const [uri, setUri] = createSignal("");
 	const [description, setDescription] = createSignal("");
 	const [message, setMessage] = createSignal("");
 
-	const handleFileChange = (e: Event) => {
-		const target = e.target as HTMLInputElement;
-		if (target.files && target.files.length > 0) {
-			setPaperFile(target.files[0]);
-		}
-	};
-
 	const handleSubmit = async () => {
-		try {
-			if (!paperFile()) throw new Error("No file selected.");
-			setMessage("Uploading to Greenfield...");
-			// Pass the description as well if needed
-			//const fileURL = await uploadToGreenfield(
-			//	paperFile()!,
-			//	description(),
-			//);
-			//setMessage(`File uploaded successfully! URL: ${fileURL}`);
-		} catch (error: any) {
-			console.error("Upload error:", error);
-			setMessage(`Error: ${error.message || "Upload failed."}`);
+		const titleTrimmed = title().trim();
+		const uriTrimmed = uri().trim();
+		const descriptionTrimmed = description().trim();
+		if (uriTrimmed === "" || descriptionTrimmed === "") {
+			setMessage("Please fill out all fields.");
+			return;
 		}
+
+		setMessage("Uploading...");
+
+		// TODO: calculate hash of the file.
+		await provider.submitPaper(
+			titleTrimmed,
+			uriTrimmed,
+			"0",
+			descriptionTrimmed,
+		);
+
+		setMessage("Paper uploaded successfully.");
+		setTitle("");
+		setUri("");
+		setDescription("");
 	};
 
 	return (
@@ -35,10 +37,20 @@ const UploadPaper = () => {
 			<h1 class="text-4xl font-bold mb-4">Upload Your Research Paper</h1>
 
 			<div class="mb-6">
+				<label class="block mb-2 font-semibold">Paper Title</label>
+				<input
+					placeholder="Enter the title of the paper"
+					class="block w-full p-2 rounded-md mb-4 border-none outline-hidden bg-slate-800 hover:bg-slate-700 focus:bg-slate-900"
+					value={title()}
+					onInput={(e) => setTitle(e.currentTarget.value)}
+				/>
+
 				<label class="block mb-2 font-semibold">Paper URL</label>
 				<input
 					placeholder="Enter the URL of the paper"
 					class="block w-full p-2 rounded-md mb-4 border-none outline-hidden bg-slate-800 hover:bg-slate-700 focus:bg-slate-900"
+					value={uri()}
+					onInput={(e) => setUri(e.currentTarget.value)}
 				/>
 
 				<label class="block mb-2 font-semibold">
