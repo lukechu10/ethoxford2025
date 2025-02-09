@@ -1,6 +1,6 @@
 import { useParams } from "@solidjs/router";
 import * as provider from "./provider";
-import { Component, Show, createResource, For } from "solid-js";
+import { Show, createResource, For } from "solid-js";
 import PaperItem from "./components/PaperItem";
 
 const ProfilePage = () => {

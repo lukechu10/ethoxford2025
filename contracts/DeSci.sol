@@ -22,6 +22,9 @@ contract DeSci {
 		// Hash of the paper.
 		string fileHash;
 
+		// Short description of the paper.
+		string desc;
+
 		// Defaults to 0.
 		int64 votes;
 		// Review (ids) for the paper.
@@ -42,7 +45,7 @@ contract DeSci {
 
 	// Create a new paper and store it in the contract.
 	// Returns the id of the new paper.
-	function submitPaper(string memory _title, string memory _fileUri, string memory _fileHash) external returns (uint256) {
+	function submitPaper(string memory _title, string memory _fileUri, string memory _fileHash, string memory _desc) external returns (uint256) {
 		Paper memory paper;
 
 		uint256 id = paperCount++;
@@ -53,6 +56,8 @@ contract DeSci {
 
 		paper.fileUri = _fileUri;
 		paper.fileHash = _fileHash;
+
+		paper.desc = _desc;
 
 		// Store it in the map.
 		papers.push(paper);

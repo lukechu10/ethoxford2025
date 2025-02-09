@@ -35,6 +35,7 @@ export interface Paper {
 	timestamp: Date;
 	fileUri: string;
 	fileHash: string;
+	desc: string;
 	votes: number;
 }
 
@@ -44,7 +45,8 @@ export interface Review {
 }
 
 function mapPaperFields(paper: any[]): Paper {
-	const [id, author, title, timestamp_unix, fileUri, fileHash, votes] = paper;
+	const [id, author, title, timestamp_unix, fileUri, fileHash, desc, votes] =
+		paper;
 	// Convert timestamp from unix to JS date.
 	const timestamp = new Date(Number(timestamp_unix) * 1000);
 
@@ -55,6 +57,7 @@ function mapPaperFields(paper: any[]): Paper {
 		timestamp,
 		fileUri,
 		fileHash,
+		desc,
 		votes: Number(votes),
 	};
 }
@@ -80,8 +83,9 @@ export async function submitPaper(
 	title: string,
 	fileUri: string,
 	fileHash: string,
+	desc: string,
 ) {
-	const tx = await contract!.submitPaper(title, fileUri, fileHash);
+	const tx = await contract!.submitPaper(title, fileUri, fileHash, desc);
 	await tx.wait();
 
 	return tx;

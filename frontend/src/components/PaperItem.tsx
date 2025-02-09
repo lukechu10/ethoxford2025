@@ -5,7 +5,7 @@ const PaperItem = ({ paper }: { paper: Paper }) => {
 	return (
 		<A
 			href={`/paper/${paper.id}`}
-			class="flex flex-row bg-slate-800 my-4 p-4 rounded-xl transition hover:-translate-y-1 hover:bg-linear-to-br hover:from-orange-700 hover:to-orange-800 group"
+			class="flex flex-row bg-slate-800 my-4 p-4 rounded-xl transition hover:-translate-y-1 hover:bg-linear-to-br hover:from-orange-700 hover:to-orange-800"
 		>
 			<div class="w-10 py-1.5 mr-5 flex flex-col justify-center font-bold">
 				<div class="flex flex-col rounded">
@@ -25,7 +25,7 @@ const PaperItem = ({ paper }: { paper: Paper }) => {
 					</span>
 				</p>
 
-				<p class="mt-4">TODO: Abstract</p>
+				<p class="mt-4">{paper.desc}</p>
 			</div>
 		</A>
 	);
