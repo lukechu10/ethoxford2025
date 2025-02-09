@@ -18,7 +18,7 @@ jobs:
           node-version: 22.x
 
       - run: cd frontend && npm ci
-      - run: cd frontend && npm run build -- --base=/ethoxford2025/
+      - run: cd frontend && npm run build -- --base=/ethoxford2025
 
       - uses: actions/upload-pages-artifact@v3
         with:
