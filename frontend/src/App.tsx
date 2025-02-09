@@ -71,7 +71,7 @@ const Layout: ParentComponent = (props) => {
 						href="/"
 						class="text-xl font-bold font-mono inline-block px-3 py-1 hover:bg-slate-700 rounded-lg transition-colors"
 					>
-						ChainReview
+						ReviewChain
 					</A>
 				</div>
 				<div class="flex-1"></div>
